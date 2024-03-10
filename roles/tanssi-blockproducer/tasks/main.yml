@@ -13,6 +13,7 @@
     mode: '0755'
     owner: "{{ system_username }}"
     group: "{{ system_username }}"
+  register: download
 
 - name: Download Orchestrator Specs File
   get_url:
@@ -42,3 +43,9 @@
     enabled: yes
     state: started
   register: started
+
+- name: restart service after new release got downloaded
+  systemd:
+    name: "tanssi"
+    state: restarted
+  when: download.changed
