@@ -1,0 +1,38 @@
+[Unit]
+Description="Tanssi systemd service"
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=on-failure
+RestartSec=10
+User={{ system_username }}
+SyslogIdentifier=tanssi
+SyslogFacility=local7
+KillSignal=SIGHUP
+ExecStart=/var/lib/tanssi-data/tanssi-node \
+--chain=dancebox \
+--name={{ tanssi_nodename }}-node \
+--sync=warp \
+--base-path=/var/lib/tanssi-data/para \
+--state-pruning={{ dancebox_state_pruning }} \
+--blocks-pruning={{ dancebox_block_pruning }} \
+--collator \
+--telemetry-url='wss://telemetry.polkadot.io/submit/ 0' \
+--database paritydb \
+-- \
+--name={{ tanssi_blockproducername }}-blockproducer \
+--base-path=/var/lib/tanssi-data/container \
+--telemetry-url='wss://telemetry.polkadot.io/submit/ 0' \
+-- \
+--chain=westend_moonbase_relay_testnet \
+--name={{ tanssi_relaynodename }} \
+--base-path=/var/lib/tanssi-data/relay \
+--state-pruning={{ westend_state_pruning }} \
+--blocks-pruning={{ westend_block_pruning }} \
+--telemetry-url='wss://telemetry.polkadot.io/submit/ 0' \
+--database paritydb 
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,44 @@
+---
+- name: create directory for tanssi data 
+  file:
+    path: /var/lib/tanssi-data
+    state: directory
+    owner: "{{ system_username }}"
+    group: "{{ system_username }}"
+
+- name: Download Generic release "{{ version }}" from github
+  get_url:
+    url: https://github.com/moondance-labs/tanssi/releases/{{ version }}/download/tanssi-node
+    dest: "/var/lib/tanssi-data/tanssi-node"
+    mode: '0755'
+    owner: "{{ system_username }}"
+    group: "{{ system_username }}"
+
+- name: Download Orchestrator Specs File
+  get_url:
+    url: https://raw.githubusercontent.com/papermoonio/external-files/main/Tanssi/Dancebox/dancebox-raw-specs.json
+    dest: "/var/lib/tanssi-data/dancebox-raw-specs.json"
+    mode: '0755'
+    owner: "{{ system_username }}"
+    group: "{{ system_username }}"
+
+- name: create systemd Service
+  template:
+    src: ./roles/tanssi-blockproducer/templates/systemd.j2
+    dest: /etc/systemd/system/tanssi.service
+    owner: root
+    group: root
+    mode: '0644'
+  register: service
+
+- name: Reload systemd to read new service
+  systemd:
+    daemon_reload: yes
+  when: service.changed
+
+- name: Enable and start tanssi service
+  systemd:
+    name: "tanssi"
+    enabled: yes
+    state: started
+  register: started
