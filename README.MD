@@ -26,7 +26,7 @@ To use this Playbook you need:
 #### version
 The Version the Binary of Tanssi-Node will be pulled from GitHub.    
 ```
-verion: latest
+version: latest
 ```
 
 #### system_username
