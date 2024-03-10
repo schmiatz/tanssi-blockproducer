@@ -13,7 +13,7 @@ SyslogFacility=local7
 KillSignal=SIGHUP
 ExecStart=/var/lib/tanssi-data/tanssi-node \
 --chain=dancebox \
---name={{ tanssi_nodename }}-node \
+--name={{ tanssi_nodename }} \
 --sync=warp \
 --base-path=/var/lib/tanssi-data/para \
 --state-pruning={{ dancebox_state_pruning }} \
@@ -22,7 +22,7 @@ ExecStart=/var/lib/tanssi-data/tanssi-node \
 --telemetry-url='wss://telemetry.polkadot.io/submit/ 0' \
 --database paritydb \
 -- \
---name={{ tanssi_blockproducername }}-blockproducer \
+--name={{ tanssi_blockproducername }} \
 --base-path=/var/lib/tanssi-data/container \
 --telemetry-url='wss://telemetry.polkadot.io/submit/ 0' \
 -- \
