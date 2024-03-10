@@ -77,3 +77,7 @@ cd into this Repo and run the Playbook with 'ansible-playbook playbook.yml'
 
 ## Check your Machine after the run
 Have a look in the logs of your newly created Services with 'journalctl -fu tanssi'.   
+
+# How to update my Tanssi Server?
+Just run the playbook again.   
+It will download the relase that is tagged as "latest" in the GitHub and will restart the tanssi Service afterwards if the downloaded Version is not the same that is already running.   
